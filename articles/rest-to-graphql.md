@@ -12,3 +12,20 @@ published: false
 
 ## スキーマの書き方
 TODO: openapiのyamlとgraphqlのスキーマの比較
+
+### REST APIの場合
+```yaml
+```
+### GraphQLの場合
+
+```graphql
+type User {
+  id: ID!
+  name: String!
+  age: Int!
+}
+
+type Query {
+  user: User
+}
+```
