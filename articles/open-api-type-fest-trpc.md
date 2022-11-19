@@ -16,6 +16,8 @@ TODO: ここに補完が効いている様子をGifで貼り付ける
 - type-fest (便利な型定義の詰め合わせ)
 
 # 解説
+## 公式のopenapi-generatorを使わない理由
+公式のgeneratorはJavaが必要になる。JDKをインストールするなり、Dockerを使うなりする必要があり、手間がかかる。また、axiosなどはclientまで生成してくれるが、kyなどには対応しておらず、少し汎用性に欠ける。
 ## type-festのGetについて
 ネストしたプロパティを参照するときに便利。
 ```ts
