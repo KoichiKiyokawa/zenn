@@ -18,8 +18,8 @@
     "url": "https://github.com/KoichiKiyokawa/zenn/issues"
   },
   "homepage": "https://github.com/KoichiKiyokawa/zenn#readme",
-  "packageManager": "pnpm@7.13.1",
+  "packageManager": "pnpm@7.24.3",
   "devDependencies": {
-    "zenn-cli": "0.1.130"
+    "zenn-cli": "0.1.135"
   }
 }
