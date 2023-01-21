@@ -23,24 +23,26 @@ published: true
 
 この記事では、buildPath(path: `パス文字列`, params: `パスパラメータやクエリ`)のような関数を、バチバチに補完が効く状態にする手法を提案します。
 
-## 補完が聞いている様子
+## 補完が効いている様子
 
-![補完が聞いている様子](/images/type-safe-path/completion.gif)
+![補完が効いている様子](/images/type-safe-path/completion.gif)
+パス文字列やパスパラメータ(`:id`の部分)を良い感じに補完してくれます。
+また、長いパス文字列もあいまい検索の要領で絞り込むことができます。
 
 ## 型チェックのイメージ
 
 ```ts
 // ✅
-buildPath("/posts")
+buildPath("/posts") // => /posts
 
 // ✅
-buildPath("/posts/:id", { id: 1 })
+buildPath("/posts/:id", { id: 1 }) // => /posts/1
 
 // ❌ パスパラメータが指定されていません
 buildPath("/posts/:id")
 ```
 
-またこの記事では、react-router-dom や vue-router のようなルーティングライブラリを想定していますが、後述の方法で Next.js, Nuxt.js, SvelteKit のようなファイルベースのルーティングにも対応可能です。
+またこの記事では、react-router や vue-router のようなルーティングライブラリを想定していますが、後述の方法で Next.js, Nuxt.js, SvelteKit のようなファイルベースのルーティングにも対応可能です。
 
 # 他の手法との比較
 
@@ -71,7 +73,7 @@ import { pagesPath } from "../lib/$path"
 pagesPath.post._pid(1).$url()
 ```
 
-react-router-dom や vue-router を使う際、pathpida が生成してくれるようなオブジェクトを自前で書くのも一つの方法です。この記事ではこれを`オブジェクト方式`と呼ぶことにします。
+react-router や vue-router を使う際、pathpida が生成してくれるようなオブジェクトを自前で書くのも一つの方法です。この記事ではこれを`オブジェクト方式`と呼ぶことにします。
 提案手法と`オブジェクト方式`を様々な指標で比較したのが次の表です。
 | | 提案手法 | オブジェクト方式 |
 | -- | -- | -- |
@@ -82,12 +84,12 @@ react-router-dom や vue-router を使う際、pathpida が生成してくれる
 
 # 提案手法の実装
 
-まず、パスとそのパスにおけるクエリを以下のように定義しておきます。この型定義はパスが増えるたびに追加していきます。
+まず、パスとそのパスにおけるクエリ(`?=`)やハッシュ(`#`)を以下のように定義しておきます。この型定義はパスが増えるたびに追加していきます。
 
 ```ts
 type Paths = {
-  "/posts": { query: { q: string } }
-  "/posts/:id": { query?: never } // クエリを取らない場合はこのように書きます
+  "/posts": { query: { q: string; hash: "section" } }
+  "/posts/:id": {} // クエリを取らない場合はこのように書きます
   // ...
 }
 ```
@@ -103,7 +105,7 @@ type GetParams<Path> = Path extends `${string}:${infer P}/${infer Rest}`
 ```
 
 （難しいと感じる方は[【TypeScript】infer を理解する](https://zenn.dev/kotamaki/articles/1bef9e8ce000e3)をご参照ください。）
-このパズルは以下のような結果を吐き出します。
+この型パズルは以下のように、パス文字列からパラメータ部分(`:id`など)を抽出します。
 
 ```ts
 // GetParams<"/posts"> => never
@@ -127,7 +129,9 @@ function buildPath<Path extends keyof Paths>(
   if (param === undefined) return path
   return (
     path.replace(/:(\w+)/g, (_, key) => (param as any)[key]) +
-    (param.query ? "?" + new URLSearchParams(param.query).toString() : "") +
+    ("query" in param
+      ? "?" + new URLSearchParams(param.query).toString()
+      : "") +
     (param.hash ? "#" + param.hash : "")
   )
 }
@@ -137,7 +141,14 @@ params 引数の型が何やら複雑ですね。これは「パスパラメー�
 (参考：[【TypeScript】関数で 1 つめの引数に応じて 2 つめの引数のオプショナルを切り替える](https://zenn.dev/kiyoshiro9446/scraps/3927451da029a0))
 (一部、苦肉の策で`as any`を用いています。よりよい方法、募集中です。)
 
-なお、react-router-dom などを使うときはルーティングの定義のために、`/posts/:id`という文字列自体が欲しくなります。
+`buildPath`の使用感は以下のとおりです。
+
+```ts
+buildPath("/posts", { q: "foo", hash: "section" }) // => /posts?q=foo#section
+buildPath("/posts/:id", { id: 1 }) // => /posts/1
+```
+
+なお、react-router などを使うときはルーティングの定義のために、`/posts/:id`という文字列自体が欲しくなります。
 
 ```tsx
 <Route element={<PostShow />} path="/posts/:id">
@@ -168,4 +179,4 @@ glob などを用いてディレクトリ構造から`/posts`, `/posts/:id`の�
 - 補完が使いやすい: あいまい検索のように絞り込めます
 - バンドルサイズが軽量：型定義は JavaScript に変換することで消えてくれるため、ランタイムには少量の関数しか残らない
 
-今回のコードは[こちらの TypeScript Playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBACghsAFgZygXigbwFBT1AcgHoBXZCAJ2QIC4soBHEykAfjoDsIA3SqAXwA0ufMTKVkRGgEsAJrXpMW7KF14UBw-IVLkqUuUTAB7ZMGp1MjZhTacefISLxi9kmbKOnzUk2YCS8pbWyvbqms6ENOIUgQpWSrYqao5aotF6gUYUxgBm0gA2EPEhtsEMdGYU0hwA5gICkcQ0iMa1xeU2dqoOGvzY-aCQUADGiBAjANbosAgoUBAAHsAQHLKoAEoTxhSyADxVNbWCil0qcBwgAgB8UKxQwBTMUHS5cAXk2EXAUHB0YxNphhHsxsNghtAAOIQYDwChwAC2yD28CQtwwqMQC2Wq3WUAABgASTCHOr8GjEmq5PgwfhESkcakaLZmfj4yL3GBQAA+UGhsLg8KRexZwGukTomOxKzWqCJJMeR3JDKZsDZHNgEp66jBuRIHBGwGkxg4UAARiRCrJMSi5tLcahJhAQHlZkhkNcABSRMBzSVzNJ4AB0Id9QuQdH5cMRyMxtyWMrxKQokW09wA2mGYypMch05iALpQABk9EQcGQiBUpPq-ALqfwdEzgpjdC2Ix2+yjLeFcZONZ5qhICLNlFupdz+bmRdLVnLlerirqAnrAEpKkv6jhtB2OGYoM2hUWMFmkZFpLkoJ7T+g0Bh9bIIPkuLJV1AKDCSBRTb6kJEP8AX4-nMQYfmABRwCMECelInoADoAO4ANSrkQxxXgA+icTogG+aC3NePa-KgFy4emOEFm+SENngnqEUKQaJLhdyEKwBBQEhPQIVAACqGwADIAMoQIKYzRki9GIoxXSrkGwDGIJm6em+dAEAQVE0VekkIkG86IG+9wEAAxOxnGnrpFZYqp6kDGCu77hMrRShgtpIPaspQDhrq5l6v6IP6SB4bcfl2SayDGEUQYFG0noWlamKeq4EgGJ4fjmAQJxWHIdAAIwCKuq7YPZEUQFFMVxQU1pzIlGSUFkYA5PkRQZfQMSBLlJxMeUqmtO07H8PlhXFZF0W1LFlqVQlSX6B4XhmO4aVxJlUDZVAOUnItsi5YNQA)で試せます
+今回のコードは[こちらの TypeScript Playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBACghsAFgZygXigbwFBT1AcgHoBXZCAJ2QIC4sBfAGl32LMuSJoEsATWhs3yFS5Klz5EwAe2TBqdTExZ42Yzj15TZ8rjLkBJfouXDa7CkYFKhrGhaNSK0gGbcANhGtQAjiUogir50chTcAHYA5lD0MSoiNIjSkV4m2PTYoJBQAMaIEDkA1uiwCChQEAAewBDhvKgASgXSFLwAPKERkYxYvv4UIAD8dE05Le2dUT0k4YXh0gDu4QB8PYhwyIjDUJPR9MtQg1DAFP5QdC5w7uTYnsBQcHR5BcUYJ-7YmeDQAOIQwPAKHAALbINrwJAHDAQxAVaq1epQAAGABJMLt6DQ0REXJRYPQiNjwriKFAmnJ6Ej4kcYFAAD5QP4AuBA0FtcnAZbxOgwuE1OqoVHok5dTFEkn4qnCGncqDhCAAN0onxcMxywG40nCUAARiQPLwYeCynyEahChAQK5SkhkMsABTxMBlHllWx4AB0XudrOQdCZgJBYJhByq-MR8qVFHi0qgAG0fUHtjDkHGYQBddMx-B0BMsoMjZqtNoB-NskM9Xb0uUkYE6ygHABkNpQabKmewAEoQiKolh4mNwnJ44ngemSqPkPFuC4oPbR+g0BgZrwIG55bxO1AKP8SBRtc6kPEd8A9weyh6d2B3HAchB7Vx7QAdBYAak7RG6c4A+j0LSAtzQA55zLB5UDgcIALjf90y3V9szwe17QIPwAgIKAIigUctyOAhBnQ185QgBYoAAVQaAAZABlCAWTyQNQRA1kPVQgZOw9YBpCo3tIntLc6AIAg4IQudkPWTZ0Mw7DDkIABiAisLLD1xNhAShPST5B2HAokl5DBjSQU0BSgf9rRTB1D0QV0kEAg5LM0rVkGkTwPXcZJ7T1A0YWQ0QOAkLR9HkAgekwDDeDoABGGJO07bAtOciBXPczz3ENMpkPsMRHDAZw3E8YLegccKoAinpWMCXofAEpIUnQ2J6BiuLHISpLeJStKkB8iwNEkQKNECqwQrCyKegG4qooazsgA)で試せます
