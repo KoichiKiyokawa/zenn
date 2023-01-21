@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "zenn preview",
-    "new:article": "zenn new:article"
+    "new:article": "zenn new:article",
+    "lint": "textlint .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -20,10 +22,17 @@
   "homepage": "https://github.com/KoichiKiyokawa/zenn#readme",
   "packageManager": "pnpm@7.25.1",
   "devDependencies": {
+    "husky": "8.0.3",
+    "lint-staged": "13.1.0",
     "prettier": "2.8.3",
     "textlint": "12.5.1",
+    "textlint-rule-ja-no-abusage": "3.0.0",
     "textlint-rule-preset-ja-spacing": "2.2.0",
     "textlint-rule-preset-ja-technical-writing": "7.0.0",
     "zenn-cli": "0.1.137"
+  },
+  "lint-staged": {
+    "*.{json,md}": "prettier --write",
+    "*.md": "textlint --fix"
   }
 }

@@ -7,16 +7,21 @@ published: false
 ---
 
 ## 対象者
+
 - REST APIをすでに知っている
 - REST APIと比較しながらGraphQLを学びたい
 
 ## スキーマの書き方
-TODO: openapiのyamlとgraphqlのスキーマの比較
 
-### REST APIの場合
+TODO: openapiのyamlとgraphqlのスキーマの比較。
+
+### REST API の場合
+
 ```yaml
+
 ```
-### GraphQLの場合
+
+### GraphQL の場合
 
 ```graphql
 type User {
