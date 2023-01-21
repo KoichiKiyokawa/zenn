@@ -2,7 +2,7 @@
 title: 【TypeScript】型パズルと関数数行で、型安全なリンクを実現する
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["typescript", "型安全リンク"]
+topics: ["typescript", "型安全", "型安全リンク", "型パズル"]
 published: true
 ---
 
