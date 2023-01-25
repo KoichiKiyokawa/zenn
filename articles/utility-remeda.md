@@ -20,7 +20,7 @@ https://bundlephobia.com/package/lodash
 
 すべての関数をimportしてもたった5.3kBです。
 https://bundlephobia.com/package/remeda
-もちろん、ES Module形式が提供されているため、使っていない関数はビルド時にtree shakeで除外できます。
+さらに、ES Module形式が提供されているため、使っていない関数はビルド時にtree shakeで除外できます。
 バンドルサイズが重要なフロントエンドのプロジェクトにも導入しやすいです。
 
 ## pipe 関数が優秀
@@ -39,7 +39,7 @@ _(users)
   .value()
 ```
 
-(サンプルコードは[公式ドキュメント](https://remedajs.com/)より引用)
+(コードは[公式ドキュメント](https://remedajs.com/)より引用)
 
 それに対し、remedaはtree shakingしやすいAPIで設計されており、使用した関数のみがバンドルに含まれます(今回の例でいうと`pipe`, `filter`, `groupBy`のみ)。
 
