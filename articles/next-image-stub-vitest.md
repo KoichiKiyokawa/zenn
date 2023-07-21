@@ -1,5 +1,5 @@
 ---
-title: "Next.js + Vitestの組み合わせでnext/imageでエラーがでる問題の対処"
+title: "【Next.js + Vitest】Imageコンポーネントでエラーが出る問題の対処"
 emoji: "🏞️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["nextjs", "vitest", "vitePlugin"]
