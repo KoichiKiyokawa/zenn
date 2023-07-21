@@ -101,3 +101,6 @@ export default defineConfig({
 
 Viteのプラグインの書き方は以下の公式ドキュメントで学んだ。
 https://ja.vitejs.dev/guide/api-plugin.html
+
+この挙動は以下のリンクで試せる。
+https://stackblitz.com/edit/node-h5kfn3?file=vitest.config.ts
