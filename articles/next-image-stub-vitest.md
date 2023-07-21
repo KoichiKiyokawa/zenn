@@ -8,7 +8,7 @@ published: true
 
 # はじめに
 
-https://github.com/vercel/next.js/issues/45350
+https://github.com/vercel/next.js/issues/45350#issuecomment-1645556123
 
 このissueに回答したが、日本語でも記事を残しておく。
 
