@@ -33,7 +33,7 @@ import Home from "./page";
 
 test("can render", () => {
   const { asFragment } = render(<Home />);
-  expect(asFragment()).toBeDefined();
+  expect(asFragment()).toMatchInlineSnapshot();
 });
 ```
 
