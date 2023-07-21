@@ -49,18 +49,19 @@ Error: Uncaught [Error: Image with src "/@fs/@/public/vercel.svg" is missing req
 Next.jsでは、画像ファイルをimportした際、次のようなオブジェクトになる。
 
 ```tsx
-import logo from "@/public/vercel.svg"; // logo -> { src: '画像のパス'; width: 100; height: 100 }
+import logo from "@/public/vercel.svg";
+// logo -> { src: '画像のパス'; width: 100; height: 100 }
 ```
 
 これによってwidthやheightがImageコンポーネントへ自動的に渡り、開発者がわざわざ画像のwidthやheightを指定しなくても良くなる(という認識)。
 一方で、Viteでは、以下のように文字列になる。
 
 ```tsx
-import logo from "@/public/vercel.svg"; // logo -> '画像のパス'
+import logo from "@/public/vercel.svg";
+// logo -> '画像のパス'
 ```
 
-この違いにより、`{ src: string; width: number; height: number }`
-というオブジェクトが渡されることを想定している`Image`コンポーネントにstringを渡しているせいでエラーがでていた。
+この違いにより、オブジェクトが渡されることを想定している`Image`コンポーネントにstringを渡しているせいでエラーがでていた。
 
 # 解決策
 
