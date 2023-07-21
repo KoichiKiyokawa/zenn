@@ -26,5 +26,5 @@
     "textlint-rule-preset-ja-technical-writing": "7.0.0",
     "zenn-cli": "0.1.144"
   },
-  "packageManager": "pnpm@7.33.5"
+  "packageManager": "pnpm@8.6.9"
 }
