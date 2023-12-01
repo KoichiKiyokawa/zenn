@@ -2,8 +2,9 @@
   "filters": {},
   "rules": {
     "preset-ja-spacing": true,
-    "preset-ja-technical-writing": true,
     "ja-no-abusage": true,
-    "ja-technical-writing/ja-no-weak-phrase":false
+    "preset-ja-technical-writing": {
+      "ja-no-weak-phrase": false
+    }
   }
 }
