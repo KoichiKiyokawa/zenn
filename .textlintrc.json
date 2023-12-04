@@ -4,7 +4,10 @@
     "preset-ja-spacing": true,
     "ja-no-abusage": true,
     "preset-ja-technical-writing": {
-      "ja-no-weak-phrase": false
+      "ja-no-weak-phrase": false,
+      "ja-no-mixed-period": {
+        "allowPeriodMarks": [":"]
+      }
     }
   }
 }
