@@ -26,7 +26,7 @@
     "textlint-rule-preset-ja-technical-writing": "8.0.0",
     "zenn-cli": "0.1.144"
   },
-  "packageManager": "pnpm@8.6.9",
+  "packageManager": "pnpm@9.15.0",
   "prettier": {
     "printWidth": 100
   }
