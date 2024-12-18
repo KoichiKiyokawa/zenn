@@ -1,5 +1,5 @@
 ---
-title: "Remeda 〜TypeScriptユーティリティライブラリの結論〜"
+title: "Remeda 〜TypeScriptユーティリティライブラリ最強の一角〜"
 emoji: "🛠️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["typescript", "ユーティリティライブラリ", "lodash"]
@@ -13,6 +13,10 @@ JS界隈のユーティリティライブラリといえば、[Lodash](https://l
 https://bundlephobia.com/package/lodash
 
 そんななか、Twitterの一部界隈で注目を集めているユーティリティライブラリが[Remeda](https://remedajs.com/)です。
+
+:::message
+2024/12追記 [es-toolkit](https://es-toolkit.slash.page/)も注目を集めています。`es-toolkit/compat`というLodash互換のモジュールも提供されており、Lodashからの移行がかなり楽そうです。
+:::
 
 # 特徴
 
