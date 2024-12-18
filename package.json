@@ -10,23 +10,23 @@
     "dev": "zenn preview",
     "lint": "textlint .",
     "new:article": "zenn new:article",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{json,md}": "prettier --write",
     "*.md": "textlint --fix"
   },
   "devDependencies": {
-    "husky": "8.0.3",
-    "lint-staged": "13.2.3",
+    "husky": "9.1.7",
+    "lint-staged": "15.2.11",
     "prettier": "3.0.0",
     "textlint": "13.3.3",
     "textlint-rule-ja-no-abusage": "3.0.0",
     "textlint-rule-preset-ja-spacing": "2.3.0",
     "textlint-rule-preset-ja-technical-writing": "8.0.0",
-    "zenn-cli": "0.1.144"
+    "zenn-cli": "0.1.158"
   },
-  "packageManager": "pnpm@8.6.9",
+  "packageManager": "pnpm@9.15.0",
   "prettier": {
     "printWidth": 100
   }
