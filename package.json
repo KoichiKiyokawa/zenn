@@ -19,10 +19,10 @@
   "devDependencies": {
     "husky": "9.1.7",
     "lint-staged": "15.2.11",
-    "prettier": "3.0.0",
-    "textlint": "13.3.3",
+    "prettier": "3.4.2",
+    "textlint": "13.4.1",
     "textlint-rule-ja-no-abusage": "3.0.0",
-    "textlint-rule-preset-ja-spacing": "2.3.0",
+    "textlint-rule-preset-ja-spacing": "2.4.3",
     "textlint-rule-preset-ja-technical-writing": "8.0.0",
     "zenn-cli": "0.1.158"
   },
